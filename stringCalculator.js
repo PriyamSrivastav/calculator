@@ -3,18 +3,31 @@ function add(numbers) {
       return 0;
     }
   
-    // if (!numbers.includes(",")) {
-    //   return parseInt(numbers);
-    // }
-
-    // const [num1, num2] = numbers.split(",");
-    // return parseInt(num1) + parseInt(num2);
-
-
-
-    //Case 3:- test case for an unknown numbers and make it pass
-
-    const nums = numbers.split(",").map(num => parseInt(num));
-    return nums.reduce((acc, curr) => acc + curr);
+    let delimiter = /[,\n]/;
+    let negatives = [];
+  
+    if (numbers.startsWith("//")) {
+      const delimiterIndex = numbers.indexOf("\n");
+      delimiter = new RegExp(numbers.substring(2, delimiterIndex));
+      numbers = numbers.substring(delimiterIndex + 1);
+    }
+  
+    const nums = numbers.split(delimiter).map((num) => parseInt(num.trim()));
+  
+    let sum = 0;
+    for (let num of nums) {
+      if (num < 0) {
+        negatives.push(num);
+      } else if (num > 1000) {
+        continue;
+      }
+      sum += num;
+    }
+  
+    if (negatives.length > 0) {
+      throw new Error(`negatives not allowed: ${negatives.join(",")}`);
+    }
+  
+    return sum;
   }
 module.exports = add;
