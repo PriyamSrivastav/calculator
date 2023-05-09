@@ -10,7 +10,11 @@ test('return the number itself for single number',()=>{
     expect(add('1')).toBe(1);
 });
 
-test('should return the sum of two comma-separated numbers', () => {
+test('return the sum of two comma-separated numbers', () => {
     expect(add('1,2')).toBe(3);
+  });
+
+  test('return the sum of an unknown amount of comma-separated numbers', () => {
+    expect(add('1,2,3,4,5')).toBe(15);
   });
 })
