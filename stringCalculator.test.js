@@ -9,4 +9,8 @@ test('return 0 for an empty string',()=>{
 test('return the number itself for single number',()=>{
     expect(add('1')).toBe(1);
 });
+
+test('should return the sum of two comma-separated numbers', () => {
+    expect(add('1,2')).toBe(3);
+  });
 })
