@@ -1,33 +1,42 @@
 function add(numbers) {
-    if (numbers === "") {
-      return 0;
-    }
-  
-    let delimiter = /[,\n]/;
+    let delimiters = [',', '\n'];
+    let customDelimiter = '';
     let negatives = [];
   
-    if (numbers.startsWith("//")) {
-      const delimiterIndex = numbers.indexOf("\n");
-      delimiter = new RegExp(numbers.substring(2, delimiterIndex));
-      numbers = numbers.substring(delimiterIndex + 1);
-    }
-  
-    const nums = numbers.split(delimiter).map((num) => parseInt(num.trim()));
-  
-    let sum = 0;
-    for (let num of nums) {
-      if (num < 0) {
-        negatives.push(num);
-      } else if (num > 1000) {
-        continue;
+    if (numbers.startsWith('//')) {
+      customDelimiter = numbers.substring(2, numbers.indexOf('\n'));
+      if (customDelimiter.includes('[') && customDelimiter.includes(']')) {
+        delimiters = customDelimiter
+          .split('[')
+          .filter((delimiter) => delimiter !== '')
+          .map((delimiter) => delimiter.substring(0, delimiter.indexOf(']')));
+      } else {
+        delimiters = [customDelimiter];
       }
-      sum += num;
+      numbers = numbers.substring(numbers.indexOf('\n') + 1);
     }
+  
+    let sum = numbers
+      .split(new RegExp('[' + delimiters.join('') + ']', 'g'))
+      .reduce((total, number) => {
+        number = parseInt(number);
+        if (number < 0) {
+          negatives.push(number);
+        } else if (number <= 1000) {
+          total += number;
+        }
+        return total;
+      }, 0);
   
     if (negatives.length > 0) {
-      throw new Error(`negatives not allowed: ${negatives.join(",")}`);
+      throw new Error('Negatives not allowed: ' + negatives.join(', '));
     }
   
     return sum;
   }
-module.exports = add;
+  
+  
+  
+  
+  
+  module.exports = add;

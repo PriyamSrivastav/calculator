@@ -1,32 +1,38 @@
 const add = require('./stringCalculator');
 
 // 1. Case:   Return Zero for an empty string 
-describe('add function',()=>{
-test('return 0 for an empty string',()=>{
-    expect(add('')).toBe(0);
-});
-
-test('return the number itself for single number',()=>{
-    expect(add('1')).toBe(1);
-});
-
-test('return the sum of two comma-separated numbers', () => {
-    expect(add('1,2')).toBe(3);
+describe('add', () => {
+    test('returns 0 for empty string', () => {
+        expect(add('')).toBe(0);
+      });
+      
+      test('returns the number for single number input', () => {
+        expect(add('5')).toBe(5);
+      });
+      
+      test('returns the sum for two comma-separated numbers', () => {
+        expect(add('5,7')).toBe(12);
+      });
+      
+      test('returns the sum for three comma-separated numbers', () => {
+        expect(add('1,2,3')).toBe(6);
+      });
+      
+      test('supports newlines as an alternative delimiter', () => {
+        expect(add('1\n2,3')).toBe(6);
+      });
+      
+      test('throws an error for negative numbers', () => {
+        expect(() => add('1,-2,3')).toThrow('Negatives not allowed: -2');
+      });
+      
+      test('ignores numbers greater than 1000', () => {
+        expect(add('2,1001')).toBe(2);
+      });
+      
+      test('supports different delimiters', () => {
+        expect(add('//;\n1;2')).toBe(3);
+      });
+      
   });
-
-  test('return the sum of an unknown  number of comma-separated numbers', () => {
-    expect(add('1,2,3,4,5')).toBe(15);
-  });
-
-  test('should allow new lines between numbers and treat them as delimiters', () => {
-    expect(add('1\n2,3')).toBe(6);
-  });
-
-  test('should throw an error for negative numbers', () => {
-    expect(() => add('-1,2,-3')).toThrowError('negatives not allowed: -1,-3');
-  });
-
-  test('should allow custom delimiters to be specified', () => {
-    expect(add('//;\n1;2')).toBe(3);
-  });
-})
+  
